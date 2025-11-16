@@ -1,0 +1,43 @@
+<%- include("../partials/header") %>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Add New Blog Post</h5>
+      
+                  <form action="" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                      <label for="title" class="form-label">Blog Title</label>
+                      <input type="text" class="form-control" id="title" name="title" required />
+                    </div>
+      
+                    <div class="mb-3">
+                      <label for="content" class="form-label">Blog Content</label>
+                      <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+      
+                    <div class="mb-3">
+                      <label for="coverImage" class="form-label">Cover Image</label>
+                      <input class="form-control" type="file" id="coverImage" name="coverImage" />
+                    </div>
+      
+                    <button type="submit" class="btn btn-primary">
+                      Publish Blog
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<%- include("../partials/footer") %>

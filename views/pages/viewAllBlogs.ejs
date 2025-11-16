@@ -1,0 +1,47 @@
+<%- include("../partials/header") %>
+
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">All Blog Posts</h4>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <% if (blogs && blogs.length> 0) { %>
+                    <% blogs.forEach(blog=> { %>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card mb-4">
+                                <img src="" class="card-img-top" alt=""
+                                    style="height: 200px; object-fit: cover;" />
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= blog.title %>
+                                    </h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                        By: <%= blog.author.name %>
+                                    </h6>
+                                    <p class="card-text">
+                                        <%= blog.content %>...
+                                    </p>
+                                    <a href="/blog/<%= blog.id %>" class="btn btn-primary">Read More</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <%= blog.createdAt.toLocaleDateString() %>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                            <% } else { %>
+                                <div class="col-12">
+                                    <p class="text-center">No blog posts found. <a href="/addBlogPage">Create one!</a>
+                                    </p>
+                                </div>
+                                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include("../partials/footer") %>
