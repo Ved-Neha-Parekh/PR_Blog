@@ -14,6 +14,10 @@ router.get("/getAllBlogs", blogController.getAllBlogs);
 
 router.get("/getAllMyBlogs", blogController.getAllMyBlogs);
 
-router.get("/blog/delete/:id", blogController.deleteBlog);
+router.get("/edit/:id", blogController.editBlogPage);
+router.post("/edit/:id", uploadBlogImg ,blogController.updateBlog);
+
+router.get("/delete/:id", blogController.deleteBlog);
+
 
 export default router;

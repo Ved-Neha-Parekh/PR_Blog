@@ -93,7 +93,7 @@ const blogController = {
       return res.redirect("/getAllBlogs");
     }
   },
-  async editBlog(req, res) {
+  async editBlogPage(req, res) {
     try {
       const blogId = req.params.id;
       const user = res.locals.user;
@@ -117,6 +117,50 @@ const blogController = {
     } catch (error) {
       console.log("Error while edit a blog:", error.message);
       return res.redirect("/getAllBlogs");
+    }
+  },
+  async updateBlog(req,res){
+    try {
+      const { title, content } = req.body;
+      const blogId = req.params.id;
+      const user = res.locals.user;
+
+      const blog = await Blog.findById(blogId);
+      if (!blog) {
+        return res.redirect("/getAllBlogs");
+      }
+
+      const isAuthorized =
+        user.role === "admin" || blog.author.toString() === user.id.toString();
+
+      if (!isAuthorized) {
+        console.log("Unauthorized update attempt.");
+        return res.redirect("/getAllBlogs");
+      }
+
+      blog.title = title;
+      blog.content = content;
+
+      if(req.file){
+        const oldImgPath = blog.coverImage;
+        const newImgPath = `/uploads/${req.file.filename}`;
+
+        blog.coverImage = newImgPath;
+
+        if (oldImgPath) {
+          const path = oldImgPath.substring(1);
+          if (fs.existsSync(path)) {
+            fs.unlinkSync(path);
+          }
+        }
+      }
+
+      await blog.save();
+
+      return res.redirect("/getAllBlogs");
+    } catch (error) {
+      console.log("Error while updating a blog:", error.message);
+      return res.redirect("/getAllMyBlogs");
     }
   }
 };

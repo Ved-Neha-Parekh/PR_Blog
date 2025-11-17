@@ -1,0 +1,58 @@
+<%- include("../partials/header") %>
+
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Edit Blog Post</h4>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Editing: <%= blog.title %>
+                            </h5>
+
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Blog Title</label>
+                                    <input type="text" class="form-control" id="title" name="title"
+                                        value="<%= blog.title %>" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="content" class="form-label">Blog Content</label>
+                                    <textarea class="form-control" id="content" name="content" rows="10"
+                                        required><%= blog.content %></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Current Cover Image</label>
+                                    <br />
+                                    <img src="<%= blog.coverImage %>" alt="Current Cover"
+                                        style="width: 200px; height: auto; border-radius: 5px;" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="coverImage" class="form-label">Upload New Image (Optional)</label>
+                                    <input class="form-control" type="file" id="coverImage" name="coverImage" />
+                                    <small class="form-text text-muted">Leave this blank to keep the current
+                                        image.</small>
+                                </div>
+
+                                <button type="submit" class="btn btn-warning">
+                                    Update Blog
+                                </button>
+                                <a href="/getAllBlogs" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("../partials/footer") %>
