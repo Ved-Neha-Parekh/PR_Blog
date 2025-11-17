@@ -24,7 +24,7 @@ const checkAuth = async (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
   if (res.locals.user && res.locals.user.role === "admin") {
-    next();
+    return next();
   }
 
   return res.redirect("/");

@@ -1,4 +1,6 @@
 import Blog from "../models/blogModel.js";
+import path from "path";
+import fs from "fs";
 
 const blogController = {
   addBlogPage(req, res) {
@@ -13,17 +15,17 @@ const blogController = {
       let imgPath = "";
 
       if (req.file) {
-        imgPath = `/uploads/blogs/${req.file.filename}`;
+        imgPath = `/uploads/${req.file.filename}`;
       }
 
       await Blog.create({
         title: title,
         content: content,
         author: authorId,
-        coverImg: imgPath || undefined,
+        coverImage: imgPath || undefined,
       });
 
-      return res.redirect("/");
+      return res.redirect("/getAllBlogs");
     } catch (error) {
       console.log("Error creating blog:", error.message);
       return res.redirect("/addBlogPage");
@@ -31,10 +33,10 @@ const blogController = {
   },
   async getAllBlogs(req, res) {
     try {
-      const allBlogs = await Blog.find({}).populate("author", "name");
+      const getAllBlogs = await Blog.find({}).populate("author", "name");
 
       return res.render("./pages/viewAllBlogs", {
-        blogs: allBlogs,
+        blogs: getAllBlogs,
       });
     } catch (error) {
       console.log("Error while fetching blogs: ", error.message);
@@ -58,6 +60,65 @@ const blogController = {
       return res.redirect("/");
     }
   },
+  async deleteBlog(req,res){
+    try {
+      const blogId = req.params.id;
+      const user = res.locals.user;
+
+      const blog = await Blog.findById(blogId);
+      if (!blog) {
+        console.log("Blog not found.");
+        return res.redirect("/getAllBlogs");
+      }
+
+      const isAuthorized = user.role === "admin" || blog.author.toString() === user.id.toString();
+      if (!isAuthorized) {
+        console.log("Unauthorized delete attempt.");
+        return res.redirect("/getAllBlogs");
+      }
+
+      const imgPath = blog.coverImage;
+      if (imgPath) {
+        const path = imgPath.substring(1);
+        if (fs.existsSync(path)) {
+          fs.unlinkSync(path);
+        }
+      }
+
+      await Blog.findByIdAndDelete(blogId);
+
+      return res.redirect("/getAllBlogs");
+    } catch (error) {
+      console.log("Error while deleting a blog:", error.message);
+      return res.redirect("/getAllBlogs");
+    }
+  },
+  async editBlog(req, res) {
+    try {
+      const blogId = req.params.id;
+      const user = res.locals.user;
+
+      const blog = await Blog.findById(blogId);
+      if (!blog) {
+        console.log("Blog not found.");
+        return res.redirect("/getAllBlogs");
+      }
+
+      const isAuthorized = user.role === "admin" || blog.author.toString() === user.id.toString();
+      if (!isAuthorized) {
+        console.log("Unauthorized edit attempt.");
+        return res.redirect("/getAllBlogs");
+      }
+
+      return res.render("./pages/editBlogPage", {
+        blog: blog,
+      });
+
+    } catch (error) {
+      console.log("Error while edit a blog:", error.message);
+      return res.redirect("/getAllBlogs");
+    }
+  }
 };
 
 export default blogController;

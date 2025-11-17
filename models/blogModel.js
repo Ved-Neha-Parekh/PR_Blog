@@ -14,7 +14,7 @@ const blogSchema = new mongoose.Schema({
     ref: "userModel",
     required: true
   },
-  coverImg: {
+  coverImage: {
     type: String,
   }
 },{

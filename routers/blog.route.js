@@ -5,12 +5,15 @@ import { uploadBlogImg } from "../middlewares/uploadCoverImg.js";
 
 const router = Router();
 
-router.get("/addBlogPage",checkAuth,blogController.addBlogPage);
+router.use(checkAuth);
+router.get("/addBlogPage", blogController.addBlogPage);
 
-router.post("/addBlogPage",checkAuth,uploadBlogImg,blogController.addBlog);
+router.post("/addBlogPage", uploadBlogImg, blogController.addBlog);
 
-router.get("/getAllBlogs",checkAuth,blogController.getAllBlogs);
+router.get("/getAllBlogs", blogController.getAllBlogs);
 
-router.get("/getAllMyBlogs",checkAuth,blogController.getAllMyBlogs);
+router.get("/getAllMyBlogs", blogController.getAllMyBlogs);
+
+router.get("/blog/delete/:id", blogController.deleteBlog);
 
 export default router;
